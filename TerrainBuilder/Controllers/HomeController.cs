@@ -4,7 +4,7 @@ using TerrainBuilder.Models;
 
 namespace TerrainBuilder.Controllers
 {
-    public class HomeController : Controller //test2
+    public class HomeController : Controller //test2 4
     {
         private readonly ILogger<HomeController> _logger;
 
