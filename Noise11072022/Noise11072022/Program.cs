@@ -1,14 +1,36 @@
-﻿using TerrainBuilder.Contracts;
-using TerrainBuilder.Models;
+﻿using System.Security.Cryptography;
 
-namespace TerrainBuilder.Services
+namespace Noise11072022
 {
-    public class TerrainService : ITerrainService
+    public class Program
     {
-        public async Task<TerrainViewModel> GenerateTerrain()
+        static void Main(string[] args)
         {
-            TerrainViewModel viewModel = new TerrainViewModel();
-            return viewModel;
+            Console.ReadKey();
+            Console.Clear();
+            Terrain t = new Terrain(100, 100, 243.456, 394.562, 5, 2);
+            t.Generate();
+            t.Print();
+        }
+    }
+
+    public class Terrain
+    {
+        public Terrain(int l, int w, double offX, double offY, int oct, double inf)
+        {
+            Length = l;
+            Width = w;
+            OffsetX = offX;
+            OffsetY = offY;
+            Octaves = oct;
+            Zoom = 1;
+            Power = 1;
+            Influence = inf;
+            Heights = new double[Length][];
+            for (int i = 0; i < l; i++)
+            {
+                Heights[i] = new double[Width];
+            }
         }
 
         public int Length { get; set; }
@@ -18,7 +40,7 @@ namespace TerrainBuilder.Services
         public double[][] Heights { get; set; }
 
         public double OffsetX { get; set; }
-
+        
         public double OffsetY { get; set; }
 
         public int Octaves { get; set; }
@@ -29,7 +51,7 @@ namespace TerrainBuilder.Services
 
         public double Influence { get; set; }
 
-        public double Rand(double x)
+        public double Rand(double x) 
         {
             x %= 1000;
             int counter = 1;
@@ -47,7 +69,7 @@ namespace TerrainBuilder.Services
                     {
                         x *= i;
                     }
-                    else
+                    else 
                     {
                         x /= i;
                     }
@@ -58,21 +80,21 @@ namespace TerrainBuilder.Services
                     counter++;
                 }
             }
-
+            
             return x % 2;
         }
 
-        public double Noise1D(double x)
+        public double Noise1D(double x) 
         {
             double b = 0;
             double t = 0;
-
+            
             if (x % 1 != 0)
             {
                 b = Rand(Math.Floor(x));
                 t = Rand(Math.Ceiling(x));
             }
-            else
+            else 
             {
                 if (x > 1)
                 {
@@ -80,7 +102,7 @@ namespace TerrainBuilder.Services
                 }
                 t = Rand(x + 1);
             }
-
+            
             double inc = 0;
             double min = 0;
             double d = x - b;
@@ -95,7 +117,7 @@ namespace TerrainBuilder.Services
                 {
                     d = 1;
                 }
-                else
+                else 
                 {
                     d = 0;
                 }
@@ -107,7 +129,7 @@ namespace TerrainBuilder.Services
                 inc = b - t;
                 return (-3 * d * d + 2 * d * d * d + 1) * inc + min - 1;
             }
-            else
+            else 
             {
                 min = b;
                 inc = t - b;
@@ -115,7 +137,7 @@ namespace TerrainBuilder.Services
             }
         }
 
-        public void Generate()
+        public void Generate() 
         {
             for (int i = 0; i < Octaves; i++)
             {
@@ -132,6 +154,45 @@ namespace TerrainBuilder.Services
                 }
                 Zoom *= Influence;
                 Power /= Influence;
+            }
+        }
+
+        public void ColorCode(double x) 
+        {
+            if (x < -0.6)
+            {
+                Console.BackgroundColor = ConsoleColor.Cyan;
+            }
+            else if (x >= -0.6 && x < -0.2)
+            {
+                Console.BackgroundColor = ConsoleColor.Yellow;
+            }
+            else if (x >= -0.2 && x < 0.2)
+            {
+                Console.BackgroundColor = ConsoleColor.Green;
+            }
+            else if (x >= 0.2 && x < 0.6)
+            {
+                Console.BackgroundColor = ConsoleColor.Gray;
+            }
+            else 
+            {
+                Console.BackgroundColor = ConsoleColor.White;
+            }
+
+        }
+
+        public void Print() 
+        {
+            for (int i = 0; i < Length; i++)
+            {
+                for (int j = 0; j < Width; j++)
+                {
+                    ColorCode(Heights[i][j]);
+                    Console.Write("  ");
+                }
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine();
             }
         }
     }
