@@ -7,7 +7,23 @@ namespace TerrainBuilder.Services
     {
         public async Task<TerrainViewModel> GenerateTerrain()
         {
+            Generate();
             TerrainViewModel viewModel = new TerrainViewModel();
+
+            viewModel.Length = this.Length;
+            viewModel.Width = this.Width;
+
+            viewModel.Heights = new double[Length][];
+
+            for (int i = 0; i < Length; i++)
+            {
+                viewModel.Heights[i] = new double[viewModel.Width];
+                for (int j = 0; j < Width; j++)
+                {
+                    viewModel.Heights[i][j] = this.Heights[i][j];
+                }
+            }
+
             return viewModel;
         }
 
@@ -116,7 +132,7 @@ namespace TerrainBuilder.Services
         }
 
         public void Generate()
-        {
+        {   
             for (int i = 0; i < Octaves; i++)
             {
                 Zoom /= Influence;

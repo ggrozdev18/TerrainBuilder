@@ -8,12 +8,12 @@
 
         public string Topic { get; set; }
 
-        public string Location { get; set; }
-
         public string Description { get; set; }
 
         public MeetingType MeetingType { get; set; }
 
         public MeetingStatus MeetingStatus { get; set; }
+
+        public City City { get; set; }
     }
 }

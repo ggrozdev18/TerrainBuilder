@@ -13,8 +13,11 @@ namespace TerrainBuilder.Controllers
             terrainsv = _terrainsv;
         }
 
-        public IActionResult GenerateTerrain()
+        public async Task<IActionResult> GenerateTerrain()
         {
+            TerrainViewModel terrain = new TerrainViewModel();
+
+            terrain = await terrainsv.GenerateTerrain();
             return View();
         }
     }

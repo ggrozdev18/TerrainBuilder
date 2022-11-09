@@ -17,6 +17,8 @@ namespace TerrainBuilder.Data
         [StringLength(500)]
         public string Description { get; set; }
 
-        public List<GeoPoint> GeoPoints { get; set; }
+
+
+        //public List<GeoPoint> GeoPoints { get; set; }
     }
 }
