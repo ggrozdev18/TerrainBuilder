@@ -17,7 +17,7 @@ namespace TerrainBuilder.Controllers
         {
             TerrainViewModel terrain = new TerrainViewModel();
 
-            terrain = await terrainsv.GenerateTerrain(100, 100, 373.456, 494.562, 5, 2);
+            terrain = await terrainsv.GenerateTerrain(500, 500, 373.456, 494.562, 5, 2);
             return View(terrain);
         }
     }

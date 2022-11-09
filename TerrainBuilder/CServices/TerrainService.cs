@@ -60,7 +60,7 @@ namespace TerrainBuilder.Services
 
         public double Rand(double x)
         {
-            x %= 1000;
+            x %= 10000;
             int counter = 1;
             int[] primes = new int[100];
 
