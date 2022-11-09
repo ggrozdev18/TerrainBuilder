@@ -8,7 +8,14 @@ namespace Noise11072022
         {
             Console.ReadKey();
             Console.Clear();
-            Terrain t = new Terrain(100, 100, 243.456, 394.562, 5, 2);
+            Terrain t = new Terrain(100, 100, 373.456, 494.562, 5, 2);
+            //Good Seeds
+            //743.456, 894.562
+            //753.456, 904.562
+            //1395.3256, 714.6814
+            //1395.3256, 1114.6884
+            //1395.3256, 1014.6884
+            //373.456, 494.562
             t.Generate();
             t.Print();
         }
@@ -159,17 +166,25 @@ namespace Noise11072022
 
         public void ColorCode(double x) 
         {
-            if (x < -0.6)
+            if (x < -0.8)
+            {
+                Console.BackgroundColor = ConsoleColor.Blue;
+            }
+            else if (x >= -0.8 && x < -0.5)
             {
                 Console.BackgroundColor = ConsoleColor.Cyan;
             }
-            else if (x >= -0.6 && x < -0.2)
+            else if (x >= -0.5 && x < -0.3)
             {
                 Console.BackgroundColor = ConsoleColor.Yellow;
             }
-            else if (x >= -0.2 && x < 0.2)
+            else if (x >= -0.3 && x < -0.1)
             {
                 Console.BackgroundColor = ConsoleColor.Green;
+            }
+            else if (x >= -0.1 && x < 0.2)
+            {
+                Console.BackgroundColor = ConsoleColor.DarkGreen;
             }
             else if (x >= 0.2 && x < 0.6)
             {
@@ -188,8 +203,25 @@ namespace Noise11072022
             {
                 for (int j = 0; j < Width; j++)
                 {
-                    ColorCode(Heights[i][j]);
-                    Console.Write("  ");
+                    if (Heights[i][j] >= -0.4)
+                    {
+                        Random r = new Random();
+                        if (r.Next(175) == 25)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                            Console.Write("  ");
+                        }
+                        else
+                        {
+                            ColorCode(Heights[i][j]);
+                            Console.Write("  ");
+                        }
+                    }
+                    else 
+                    {
+                        ColorCode(Heights[i][j]);
+                        Console.Write("  ");
+                    }
                 }
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.WriteLine();
