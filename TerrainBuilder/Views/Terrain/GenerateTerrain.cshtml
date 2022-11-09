@@ -1,1 +1,69 @@
 ﻿@model TerrainBuilder.Models.TerrainViewModel 
+
+@{
+    void ColorCode(double x)
+    {
+        if (x < -0.8)
+        {
+            Console.BackgroundColor = ConsoleColor.Blue;
+        }
+        else if (x >= -0.8 && x < -0.5)
+        {
+            Console.BackgroundColor = ConsoleColor.Cyan;
+        }
+        else if (x >= -0.5 && x < -0.3)
+        {
+            Console.BackgroundColor = ConsoleColor.Yellow;
+        }
+        else if (x >= -0.3 && x < -0.1)
+        {
+            Console.BackgroundColor = ConsoleColor.Green;
+        }
+        else if (x >= -0.1 && x < 0.2)
+        {
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+        }
+        else if (x >= 0.2 && x < 0.6)
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+        }
+        else
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+        }
+
+    }
+}
+<table>
+    <tr>
+        <td style="background-color:aqua"></td>
+        <td></td>
+    </tr>
+</table>
+@for (int i = 0; i < Model.Length; i++)
+            {
+                for (int j = 0; j < Model.Width; j++)
+                {
+                    if (Model.Heights[i][j] >= -0.4)
+                    {
+                        Random r = new Random();
+                        if (r.Next(175) == 25)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                            Console.Write("  ");
+                        }
+                        else
+                        {
+                            ColorCode(Model.Heights[i][j]);
+                            Console.Write("  ");
+                        }
+                    }
+                    else
+                    {
+                        ColorCode(Model.Heights[i][j]);
+                        Console.Write("  ");
+                    }
+                }
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.WriteLine();
+            }

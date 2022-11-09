@@ -5,8 +5,21 @@ namespace TerrainBuilder.Services
 {
     public class TerrainService : ITerrainService
     {
-        public async Task<TerrainViewModel> GenerateTerrain()
+        public async Task<TerrainViewModel> GenerateTerrain(int l, int w, double offX, double offY, int oct, double inf)
         {
+            Length = l;
+            Width = w;
+            OffsetX = offX;
+            OffsetY = offY;
+            Octaves = oct;
+            Zoom = 1;
+            Power = 1;
+            Influence = inf;
+            Heights = new double[Length][];
+            for (int i = 0; i < l; i++)
+            {
+                Heights[i] = new double[Width];
+            }
             Generate();
             TerrainViewModel viewModel = new TerrainViewModel();
 

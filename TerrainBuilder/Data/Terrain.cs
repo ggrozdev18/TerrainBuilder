@@ -17,7 +17,23 @@ namespace TerrainBuilder.Data
         [StringLength(500)]
         public string Description { get; set; }
 
+        public int Length { get; set; }
 
+        public int Width { get; set; }
+
+        //public double[][] Heights { get; set; }
+
+        public double OffsetX { get; set; }
+
+        public double OffsetY { get; set; }
+
+        public int Octaves { get; set; }
+
+        public double Zoom { get; set; }
+
+        public double Power { get; set; }
+
+        public double Influence { get; set; }
 
         //public List<GeoPoint> GeoPoints { get; set; }
     }
