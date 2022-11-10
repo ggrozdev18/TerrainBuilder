@@ -13,10 +13,12 @@ namespace TerrainBuilder.Data
 
         public DbSet<Terrain> Terrains { get; set; }
 
-        public DbSet<TerrainBuilder.Data.Meeting> Meeting { get; set; }
+        public DbSet<Meeting> Meetings { get; set; }
 
-        public DbSet<TerrainBuilder.Data.MeetingStatus> MeetingStatus { get; set; }
+        public DbSet<MeetingStatus> MeetingStatuses { get; set; }
 
-        public DbSet<TerrainBuilder.Data.MeetingType> MeetingType { get; set; }
+        public DbSet<MeetingType> MeetingTypes { get; set; }
+        
+        public DbSet<City> Cities { get; set; }
     }
 }

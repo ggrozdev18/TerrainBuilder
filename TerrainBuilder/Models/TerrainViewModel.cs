@@ -7,5 +7,12 @@
         public int Width { get; set; }
 
         public double[][] Heights { get; set; }
+
+        //public List<MasivTochki> Tochki {get;set;}
     }
+
+    //
+    // X
+    // Y
+    // cviat
 }

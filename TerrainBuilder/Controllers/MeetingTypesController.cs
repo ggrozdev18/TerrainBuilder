@@ -21,18 +21,18 @@ namespace TerrainBuilder.Controllers
         // GET: MeetingTypes
         public async Task<IActionResult> Index()
         {
-              return View(await _context.MeetingType.ToListAsync());
+              return View(await _context.MeetingTypes.ToListAsync());
         }
 
         // GET: MeetingTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.MeetingType == null)
+            if (id == null || _context.MeetingTypes == null)
             {
                 return NotFound();
             }
 
-            var meetingType = await _context.MeetingType
+            var meetingType = await _context.MeetingTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (meetingType == null)
             {
@@ -67,12 +67,12 @@ namespace TerrainBuilder.Controllers
         // GET: MeetingTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.MeetingType == null)
+            if (id == null || _context.MeetingTypes == null)
             {
                 return NotFound();
             }
 
-            var meetingType = await _context.MeetingType.FindAsync(id);
+            var meetingType = await _context.MeetingTypes.FindAsync(id);
             if (meetingType == null)
             {
                 return NotFound();
@@ -118,12 +118,12 @@ namespace TerrainBuilder.Controllers
         // GET: MeetingTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.MeetingType == null)
+            if (id == null || _context.MeetingTypes == null)
             {
                 return NotFound();
             }
 
-            var meetingType = await _context.MeetingType
+            var meetingType = await _context.MeetingTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (meetingType == null)
             {
@@ -138,14 +138,14 @@ namespace TerrainBuilder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.MeetingType == null)
+            if (_context.MeetingTypes == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.MeetingType'  is null.");
             }
-            var meetingType = await _context.MeetingType.FindAsync(id);
+            var meetingType = await _context.MeetingTypes.FindAsync(id);
             if (meetingType != null)
             {
-                _context.MeetingType.Remove(meetingType);
+                _context.MeetingTypes.Remove(meetingType);
             }
             
             await _context.SaveChangesAsync();
@@ -154,7 +154,7 @@ namespace TerrainBuilder.Controllers
 
         private bool MeetingTypeExists(int id)
         {
-          return _context.MeetingType.Any(e => e.Id == id);
+          return _context.MeetingTypes.Any(e => e.Id == id);
         }
     }
 }
