@@ -1,10 +1,29 @@
 ﻿using TerrainBuilder.Contracts;
+using TerrainBuilder.Data;
 using TerrainBuilder.Models;
 
 namespace TerrainBuilder.Services
 {
     public class TerrainService : ITerrainService
     {
+        public int Length { get; set; }
+
+        public int Width { get; set; }
+
+        public double[][] Heights { get; set; }
+
+        public double OffsetX { get; set; }
+
+        public double OffsetY { get; set; }
+
+        public int Octaves { get; set; }
+
+        public double Zoom { get; set; }
+
+        public double Power { get; set; }
+
+        public double Influence { get; set; }
+
         public async Task<TerrainViewModel> GenerateTerrain(int l, int w, double offX, double offY, int oct, double inf)
         {
             Length = l;
@@ -39,24 +58,6 @@ namespace TerrainBuilder.Services
 
             return viewModel;
         }
-
-        public int Length { get; set; }
-
-        public int Width { get; set; }
-
-        public double[][] Heights { get; set; }
-
-        public double OffsetX { get; set; }
-
-        public double OffsetY { get; set; }
-
-        public int Octaves { get; set; }
-
-        public double Zoom { get; set; }
-
-        public double Power { get; set; }
-
-        public double Influence { get; set; }
 
         public double Rand(double x)
         {
@@ -163,5 +164,6 @@ namespace TerrainBuilder.Services
                 Power /= Influence;
             }
         }
+
     }
 }
