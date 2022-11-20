@@ -24,7 +24,7 @@ namespace TerrainBuilder.Services
 
         public double Influence { get; set; }
 
-        public async Task<TerrainViewModel> GenerateTerrain(int l, int w, double offX, double offY, int oct, double inf)
+        public async Task<GenerateTerrainViewModel> GenerateTerrain(int l, int w, double offX, double offY, int oct, double inf)
         {
             Length = l;
             Width = w;
@@ -40,7 +40,7 @@ namespace TerrainBuilder.Services
                 Heights[i] = new double[Width];
             }
             Generate();
-            TerrainViewModel viewModel = new TerrainViewModel();
+            GenerateTerrainViewModel viewModel = new GenerateTerrainViewModel();
 
             viewModel.Length = this.Length;
             viewModel.Width = this.Width;
@@ -157,7 +157,9 @@ namespace TerrainBuilder.Services
                 {
                     for (int j = 0; j < Width; j++)
                     {
-                        Heights[i][j] += (Noise1D(double.Parse((i * Zoom + OffsetX).ToString())) * Power + Noise1D(double.Parse((j * Zoom + OffsetY).ToString())) * Power) / 2;
+                        double x = i * Zoom + OffsetX;
+                        double y = j * Zoom + OffsetY;
+                        Heights[i][j] += (Noise1D(double.Parse((x + Noise1D(double.Parse((j * 0.03125 + OffsetY).ToString()))).ToString())) * Power + Noise1D(double.Parse((y + Noise1D(double.Parse((i * 0.03125 + OffsetX).ToString()))).ToString())) * Power) / 2;
                     }
                 }
                 Zoom *= Influence;

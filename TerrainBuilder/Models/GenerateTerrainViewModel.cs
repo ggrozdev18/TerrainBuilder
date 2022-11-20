@@ -1,6 +1,6 @@
 ﻿namespace TerrainBuilder.Models
 {
-    public class TerrainViewModel
+    public class GenerateTerrainViewModel
     {
         public int Length { get; set; }
 

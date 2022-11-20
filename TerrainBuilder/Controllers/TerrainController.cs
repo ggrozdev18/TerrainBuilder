@@ -17,9 +17,9 @@ namespace TerrainBuilder.Controllers
 
         public async Task<IActionResult> GenerateTerrain()
         {
-            TerrainViewModel terrain = new TerrainViewModel();
+            GenerateTerrainViewModel terrain = new GenerateTerrainViewModel();
 
-            terrain = await terrainsv.GenerateTerrain(500, 500, 373.456, 494.562, 5, 2);
+            terrain = await terrainsv.GenerateTerrain(150, 150, 83681.452163, 41294.53462, 5, 2);
             return View(terrain);
         }
     }

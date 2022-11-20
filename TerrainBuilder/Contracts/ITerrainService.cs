@@ -4,7 +4,7 @@ namespace TerrainBuilder.Contracts
 {
     public interface ITerrainService
     {
-        Task<TerrainViewModel> GenerateTerrain(int l, int w, double offX, double offY, int oct, double inf); 
+        Task<GenerateTerrainViewModel> GenerateTerrain(int l, int w, double offX, double offY, int oct, double inf); 
         
         double Rand(double x);
 
