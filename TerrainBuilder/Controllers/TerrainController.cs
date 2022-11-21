@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System;
 using TerrainBuilder.Contracts;
 using TerrainBuilder.Data;
 using TerrainBuilder.Models;
@@ -27,28 +29,32 @@ namespace TerrainBuilder.Controllers
             return View(terrain);
         }
 
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(await _context.TerrainViewModel.ToListAsync());
-        //}
 
-        //// GET: TerrainViewModels/Details/5
-        //public async Task<IActionResult> Details(Guid? id)
-        //{
-        //    if (id == null || _context.TerrainViewModel == null)
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    var terrainViewModel = await _context.TerrainViewModel
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (terrainViewModel == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Index()
+        {
+            return View();
+           // return View(await _context.TerrainViewModel.ToListAsync());
+        }
 
-        //    return View(terrainViewModel);
-        //}
+        // GET: TerrainViewModels/Details/5
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            //if (id == null || _context.TerrainViewModel == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var terrainViewModel = await _context.TerrainViewModel
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            //if (terrainViewModel == null)
+            //{
+            //    return NotFound();
+            //}
+
+            // return View(terrainViewModel);
+            return View();
+        }
 
         // GET: TerrainViewModels/Create
         public IActionResult Create()
@@ -63,12 +69,28 @@ namespace TerrainBuilder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Length,Width,OffsetX,OffsetY,Octaves,Influence")] TerrainViewModel terrainViewModel)
         {
-            var v = HttpContext.Request.Form["OffsetX"].ToString();
-            double OffsetX = Double.Parse(v);
+            string v = HttpContext.Request.Form["OffsetX"].ToString();
+            string temp = "";
+            for (int i = 0; i < v.Length; i++)
+            {
+                if (v[i] == '.')
+                {
+                    temp += ",";
+                }
+                else 
+                {
+                    temp += v[i].ToString();
+                }
+            }
+            double OffsetX = double.Parse(temp);
             terrainViewModel.OffsetX= OffsetX;
+            
+            ModelState.ClearValidationState(nameof(terrainViewModel));
+            var validationResultList = new List<ValidationResult>();
+            bool isModelValid = Validator.TryValidateObject(terrainViewModel, new ValidationContext(terrainViewModel), validationResultList);
 
             Terrain realTerrain = new Terrain();
-            if (ModelState.IsValid)
+            if (isModelValid)
             {
                 terrainViewModel.Id = Guid.NewGuid();
                 realTerrain.Id = terrainViewModel.Id;
