@@ -1,4 +1,5 @@
 ﻿using TerrainBuilder.Models;
+using TerrainBuilder.Data;
 
 namespace TerrainBuilder.Contracts
 {
@@ -9,6 +10,8 @@ namespace TerrainBuilder.Contracts
         string ConvertOffset(string x);
 
         Task<TerrainViewModel> CreateTerrain(TerrainViewModel tvm, string x, string y);
+        
+        Task<TerrainViewModel> EditTerrain(TerrainViewModel tvm, string x, string y);
 
         double Rand(double x);
 

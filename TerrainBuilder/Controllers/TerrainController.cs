@@ -98,55 +98,57 @@ namespace TerrainBuilder.Controllers
         }
 
         // GET: TerrainViewModels/Edit/5
-        //public async Task<IActionResult> Edit(Guid? id)
-        //{
-        //    if (id == null || _context.TerrainViewModel == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            if (id == null || _context.Terrains == null)
+            {
+                return NotFound();
+            }
 
-        //    var terrainViewModel = await _context.TerrainViewModel.FindAsync(id);
-        //    if (terrainViewModel == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(terrainViewModel);
-        //}
+            var terrain = await _context.Terrains.FindAsync(id);
+            if (terrain == null)
+            {
+                return NotFound();
+            }
+
+            TerrainViewModel tvm = new TerrainViewModel();
+            tvm.Id = terrain.Id;
+            tvm.OffsetX = terrain.OffsetX;
+            tvm.OffsetY = terrain.OffsetY;
+            tvm.Width = terrain.Width;
+            tvm.Length = terrain.Length;
+            tvm.Influence = terrain.Influence;
+            tvm.Octaves = terrain.Octaves;
+            tvm.Name = terrain.Name;
+            tvm.Description = terrain.Description;
+
+            return View(tvm);
+        }
 
         //// POST: TerrainViewModels/Edit/5
         //// To protect from overposting attacks, enable the specific properties you want to bind to.
         //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Length,Width,OffsetX,OffsetY,Octaves,Influence")] TerrainViewModel terrainViewModel)
-        //{
-        //    if (id != terrainViewModel.Id)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Length,Width,OffsetX,OffsetY,Octaves,Influence")] TerrainViewModel terrainViewModel)
+        {
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(terrainViewModel);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!TerrainViewModelExists(terrainViewModel.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(terrainViewModel);
-        //}
+            if (id != terrainViewModel.Id)
+            {
+                return NotFound();
+            }
+
+            string x = HttpContext.Request.Form["OffsetX"].ToString();
+            string y = HttpContext.Request.Form["OffsetY"].ToString();
+
+            TerrainViewModel tvm = await terrainsv.EditTerrain(terrainViewModel, x, y);
+
+            if (tvm.IsDBSaveSuccessful)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(terrainViewModel);
+        }
 
         //// GET: TerrainViewModels/Delete/5
         //public async Task<IActionResult> Delete(Guid? id)

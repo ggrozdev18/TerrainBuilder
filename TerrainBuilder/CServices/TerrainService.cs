@@ -112,6 +112,48 @@ namespace TerrainBuilder.Services
             return tvm;
         }
 
+        public async Task<TerrainViewModel> EditTerrain(TerrainViewModel tvm, string x, string y)
+        {
+            tvm.OffsetX = double.Parse(ConvertOffset(x));
+            tvm.OffsetY = double.Parse(ConvertOffset(y));
+
+            //ModelState.ClearValidationState(nameof(terrainViewModel));
+            var validationResultList = new List<ValidationResult>();
+            bool isModelValid = Validator.TryValidateObject(tvm, new ValidationContext(tvm), validationResultList);
+
+            Terrain realTerrain = new Terrain();
+            tvm.IsDBSaveSuccessful = false;
+
+            if (isModelValid)
+            {
+                tvm.Id = Guid.NewGuid();
+                realTerrain.Id = tvm.Id;
+                realTerrain.Name = tvm.Name;
+                realTerrain.DateCreated = DateTime.Now;
+                realTerrain.Description = tvm.Description;
+                realTerrain.Length = tvm.Length;
+                realTerrain.Width = tvm.Width;
+                realTerrain.OffsetX = tvm.OffsetX;
+                realTerrain.OffsetY = tvm.OffsetY;
+                realTerrain.Octaves = tvm.Octaves;
+                realTerrain.Zoom = 1;
+                realTerrain.Power = 1;
+                realTerrain.Influence = tvm.Influence;
+                try
+                {
+                    _context.Update(tvm);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    tvm.IsDBSaveSuccessful = false;
+                    return tvm;
+                }
+                tvm.IsDBSaveSuccessful = true;
+            }
+            return tvm;
+        }
+
         public double Rand(double x)
         {
             x %= 10000;
