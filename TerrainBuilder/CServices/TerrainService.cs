@@ -121,13 +121,21 @@ namespace TerrainBuilder.Services
             var validationResultList = new List<ValidationResult>();
             bool isModelValid = Validator.TryValidateObject(tvm, new ValidationContext(tvm), validationResultList);
 
-            Terrain realTerrain = new Terrain();
+            Terrain realTerrain = await _context.Terrains.FindAsync(tvm.Id);
+
             tvm.IsDBSaveSuccessful = false;
+
+            if (realTerrain == null)
+            {
+                return tvm;
+            }
+
+            
 
             if (isModelValid)
             {
-                tvm.Id = Guid.NewGuid();
-                realTerrain.Id = tvm.Id;
+               // tvm.Id = Guid.NewGuid();
+               // realTerrain.Id = tvm.Id;
                 realTerrain.Name = tvm.Name;
                 realTerrain.DateCreated = DateTime.Now;
                 realTerrain.Description = tvm.Description;
@@ -141,7 +149,7 @@ namespace TerrainBuilder.Services
                 realTerrain.Influence = tvm.Influence;
                 try
                 {
-                    _context.Update(tvm);
+                    _context.Update(realTerrain);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
