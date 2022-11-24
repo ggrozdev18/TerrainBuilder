@@ -32,7 +32,23 @@ namespace TerrainBuilder.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View();
+            List<Terrain> allTerrains = await _context.Terrains.ToListAsync();
+            List<TerrainViewModel> tvms = new List<TerrainViewModel>();
+            foreach (Terrain terrain in allTerrains) 
+            {
+                TerrainViewModel tvm = new TerrainViewModel();
+                tvm.Id = terrain.Id;
+                tvm.OffsetX = terrain.OffsetX;
+                tvm.OffsetY = terrain.OffsetY;
+                tvm.Width = terrain.Width;
+                tvm.Length = terrain.Length;
+                tvm.Influence = terrain.Influence;
+                tvm.Octaves = terrain.Octaves;
+                tvm.Name = terrain.Name;
+                tvm.Description = terrain.Description;
+                tvms.Add(tvm);
+            }
+            return View(tvms);
            // return View(await _context.TerrainViewModel.ToListAsync());
         }
 
