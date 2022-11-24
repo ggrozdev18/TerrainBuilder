@@ -30,8 +30,6 @@ namespace TerrainBuilder.Controllers
             return View(terrain);
         }
 
-
-
         public async Task<IActionResult> Index()
         {
             return View();
@@ -70,47 +68,17 @@ namespace TerrainBuilder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Length,Width,OffsetX,OffsetY,Octaves,Influence")] TerrainViewModel terrainViewModel)
         {
-            string v = HttpContext.Request.Form["OffsetX"].ToString();
-            string temp = "";
-            for (int i = 0; i < v.Length; i++)
-            {
-                if (v[i] == '.')
-                {
-                    temp += ",";
-                }
-                else 
-                {
-                    temp += v[i].ToString();
-                }
-            }
-            double OffsetX = double.Parse(temp);
-            terrainViewModel.OffsetX= OffsetX;
-            
-            ModelState.ClearValidationState(nameof(terrainViewModel));
-            var validationResultList = new List<ValidationResult>();
-            bool isModelValid = Validator.TryValidateObject(terrainViewModel, new ValidationContext(terrainViewModel), validationResultList);
+            string x = HttpContext.Request.Form["OffsetX"].ToString();
+            string y = HttpContext.Request.Form["OffsetY"].ToString();
 
-            Terrain realTerrain = new Terrain();
-            if (isModelValid)
+            ModelState.ClearValidationState(nameof(terrainViewModel));
+            TerrainViewModel tvm = await terrainsv.CreateTerrain(terrainViewModel, x, y);
+
+            if (tvm.IsDBSaveSuccessful)
             {
-                terrainViewModel.Id = Guid.NewGuid();
-                realTerrain.Id = terrainViewModel.Id;
-                realTerrain.Name = terrainViewModel.Name;
-                realTerrain.DateCreated = DateTime.Now;
-                realTerrain.Description = terrainViewModel.Description;
-                realTerrain.Length = terrainViewModel.Length;
-                realTerrain.Width = terrainViewModel.Width;
-                realTerrain.OffsetX = terrainViewModel.OffsetX;
-                realTerrain.OffsetY = terrainViewModel.OffsetY;
-                realTerrain.Octaves = terrainViewModel.Octaves;
-                realTerrain.Zoom = 1;
-                realTerrain.Power = 1;
-                realTerrain.Influence = terrainViewModel.Influence;
-                _context.Add(realTerrain);
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(terrainViewModel);
+            return View(tvm);
         }
 
         // GET: TerrainViewModels/Edit/5

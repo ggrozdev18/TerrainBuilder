@@ -37,5 +37,7 @@ namespace TerrainBuilder.Models
         [Required]
         [Range(1, 4, ErrorMessage = "Must be between 1 and 4")]
         public double Influence { get; set; }
+
+        public bool IsDBSaveSuccessful { get; set; } = false;
     }
 }

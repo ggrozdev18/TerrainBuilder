@@ -1,4 +1,7 @@
-﻿using TerrainBuilder.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using TerrainBuilder.Contracts;
 using TerrainBuilder.Data;
 using TerrainBuilder.Models;
 
@@ -7,22 +10,21 @@ namespace TerrainBuilder.Services
     public class TerrainService : ITerrainService
     {
         public int Length { get; set; }
-
         public int Width { get; set; }
-
         public double[][] Heights { get; set; }
-
         public double OffsetX { get; set; }
-
         public double OffsetY { get; set; }
-
         public int Octaves { get; set; }
-
         public double Zoom { get; set; }
-
         public double Power { get; set; }
-
         public double Influence { get; set; }
+
+        private readonly ApplicationDbContext _context;
+
+        public TerrainService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public async Task<GenerateTerrainViewModel> GenerateTerrain(int l, int w, double offX, double offY, int oct, double inf)
         {
@@ -57,6 +59,57 @@ namespace TerrainBuilder.Services
             }
 
             return viewModel;
+        }
+
+        public string ConvertOffset(string x)
+        {
+            string tempX = "";
+            for (int i = 0; i < x.Length; i++)
+            {
+                if (x[i] == '.')
+                {
+                    tempX += ",";
+                }
+                else
+                {
+                    tempX += x[i].ToString();
+                }
+            }
+            return tempX;
+        }
+
+        public async Task<TerrainViewModel> CreateTerrain(TerrainViewModel tvm, string x, string y)
+        {
+            tvm.OffsetX = double.Parse(ConvertOffset(x));
+            tvm.OffsetY = double.Parse(ConvertOffset(y));
+
+            //ModelState.ClearValidationState(nameof(terrainViewModel));
+            var validationResultList = new List<ValidationResult>();
+            bool isModelValid = Validator.TryValidateObject(tvm, new ValidationContext(tvm), validationResultList);
+
+            Terrain realTerrain = new Terrain();
+            tvm.IsDBSaveSuccessful = false;
+
+            if (isModelValid)
+            {
+                tvm.Id = Guid.NewGuid();
+                realTerrain.Id = tvm.Id;
+                realTerrain.Name = tvm.Name;
+                realTerrain.DateCreated = DateTime.Now;
+                realTerrain.Description = tvm.Description;
+                realTerrain.Length = tvm.Length;
+                realTerrain.Width = tvm.Width;
+                realTerrain.OffsetX = tvm.OffsetX;
+                realTerrain.OffsetY = tvm.OffsetY;
+                realTerrain.Octaves = tvm.Octaves;
+                realTerrain.Zoom = 1;
+                realTerrain.Power = 1;
+                realTerrain.Influence = tvm.Influence;
+                _context.Add(realTerrain);
+                await _context.SaveChangesAsync();
+                tvm.IsDBSaveSuccessful = true;
+            }
+            return tvm;
         }
 
         public double Rand(double x)
@@ -166,6 +219,5 @@ namespace TerrainBuilder.Services
                 Power /= Influence;
             }
         }
-
     }
 }
