@@ -6,6 +6,8 @@ using TerrainBuilder.Contracts;
 using TerrainBuilder.Data;
 using TerrainBuilder.Models;
 using TerrainBuilder.Services;
+using System.Net;
+using System.Security.Claims;
 
 namespace TerrainBuilder.Controllers
 {
@@ -84,6 +86,17 @@ namespace TerrainBuilder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Length,Width,OffsetX,OffsetY,Octaves,Influence")] TerrainViewModel terrainViewModel)
         {
+
+            try
+            {
+                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Invalid user sent");
+            }
+
             string x = HttpContext.Request.Form["OffsetX"].ToString();
             string y = HttpContext.Request.Form["OffsetY"].ToString();
 
