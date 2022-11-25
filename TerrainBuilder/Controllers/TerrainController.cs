@@ -26,17 +26,33 @@ namespace TerrainBuilder.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> GenerateTerrain()
+        public async Task<IActionResult> GenerateTerrain(int l, int w, string offX, string offY, int oct, double inf)
         {
             GenerateTerrainViewModel terrain = new GenerateTerrainViewModel();
 
-            terrain = await terrainsv.GenerateTerrain(150, 150, 83681.452163, 41294.53462, 5, 2);
+            string x = terrainsv.ConvertOffset(offX);
+            string y = terrainsv.ConvertOffset(offY);
+
+            //150, 150, 83681.452163, 41294.53462, 5, 2
+            terrain = await terrainsv.GenerateTerrain(l,w,double.Parse(x),double.Parse(y),oct,inf);
             return View(terrain);
         }
 
         public async Task<IActionResult> Index()
         {
-            List<Terrain> allTerrains = await _context.Terrains.ToListAsync();
+            var userId = "";
+            try
+            {
+                userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Invalid user sent");
+            }
+
+            ApplicationUser appUser = await _context.Users.FindAsync(userId);
+
+            List<Terrain> allTerrains = appUser.Terrains.ToList();
             List<TerrainViewModel> tvms = new List<TerrainViewModel>();
             foreach (Terrain terrain in allTerrains) 
             {
