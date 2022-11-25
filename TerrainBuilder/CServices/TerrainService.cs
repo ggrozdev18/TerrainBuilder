@@ -78,7 +78,7 @@ namespace TerrainBuilder.Services
             return tempX;
         }
 
-        public async Task<TerrainViewModel> CreateTerrain(TerrainViewModel tvm, string x, string y)
+        public async Task<TerrainViewModel> CreateTerrain(TerrainViewModel tvm, string x, string y, string appUserId)
         {
             tvm.OffsetX = double.Parse(ConvertOffset(x));
             tvm.OffsetY = double.Parse(ConvertOffset(y));
@@ -106,6 +106,8 @@ namespace TerrainBuilder.Services
                 realTerrain.Power = 1;
                 realTerrain.Influence = tvm.Influence;
                 _context.Add(realTerrain);
+                var user = _context.Users.Find(appUserId);
+                user.Terrains.Add(realTerrain);
                 await _context.SaveChangesAsync();
                 tvm.IsDBSaveSuccessful = true;
             }
@@ -134,10 +136,7 @@ namespace TerrainBuilder.Services
 
             if (isModelValid)
             {
-               // tvm.Id = Guid.NewGuid();
-               // realTerrain.Id = tvm.Id;
                 realTerrain.Name = tvm.Name;
-                realTerrain.DateCreated = DateTime.Now;
                 realTerrain.Description = tvm.Description;
                 realTerrain.Length = tvm.Length;
                 realTerrain.Width = tvm.Width;

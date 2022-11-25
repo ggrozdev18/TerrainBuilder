@@ -9,7 +9,7 @@ namespace TerrainBuilder.Contracts
 
         string ConvertOffset(string x);
 
-        Task<TerrainViewModel> CreateTerrain(TerrainViewModel tvm, string x, string y);
+        Task<TerrainViewModel> CreateTerrain(TerrainViewModel tvm, string x, string y, string appUserId);
         
         Task<TerrainViewModel> EditTerrain(TerrainViewModel tvm, string x, string y);
 

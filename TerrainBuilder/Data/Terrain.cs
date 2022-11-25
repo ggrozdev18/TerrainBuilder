@@ -21,7 +21,6 @@ namespace TerrainBuilder.Data
         [Range(0, 150, ErrorMessage = "Must be between 1 and 150")]
         public int Length { get; set; }
 
-
         [Required]
         [Range(0, 150, ErrorMessage = "Must be between 1 and 150")]
         public int Width { get; set; }
@@ -49,5 +48,7 @@ namespace TerrainBuilder.Data
         [Required]
         [Range(0, 4, ErrorMessage = "Must be between 1 and 4")]
         public double Influence { get; set; }
+
+        public bool? IsDeleted { get; set; }
     }
 }

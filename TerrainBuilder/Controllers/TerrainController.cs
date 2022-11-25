@@ -8,10 +8,12 @@ using TerrainBuilder.Models;
 using TerrainBuilder.Services;
 using System.Net;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TerrainBuilder.Controllers
 {
     //TODO: Clean Up Controller
+    [Authorize]
     public class TerrainController : Controller
     {
         private readonly ITerrainService terrainsv;
@@ -57,20 +59,31 @@ namespace TerrainBuilder.Controllers
         // GET: TerrainViewModels/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            //if (id == null || _context.TerrainViewModel == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null || _context.Terrains == null)
+            {
+                return NotFound();
+            }
 
-            //var terrainViewModel = await _context.TerrainViewModel
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (terrainViewModel == null)
-            //{
-            //    return NotFound();
-            //}
+            var terrain = await _context.Terrains
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (terrain == null)
+            {
+                return NotFound();
+            }
 
-            // return View(terrainViewModel);
-            return View();
+            TerrainViewModel tvm = new TerrainViewModel();
+
+            tvm.Id = terrain.Id;
+            tvm.Name = terrain.Name;
+            tvm.Description = terrain.Description;
+            tvm.Length = terrain.Length;
+            tvm.Width = terrain.Width;
+            tvm.OffsetX = terrain.OffsetX;
+            tvm.OffsetY = terrain.OffsetY;
+            tvm.Octaves = terrain.Octaves;
+            tvm.Influence = terrain.Influence;
+
+            return View(tvm);
         }
 
         // GET: TerrainViewModels/Create
@@ -86,10 +99,10 @@ namespace TerrainBuilder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Length,Width,OffsetX,OffsetY,Octaves,Influence")] TerrainViewModel terrainViewModel)
         {
-
+            var userId = "";
             try
             {
-                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 
             }
             catch (Exception ex)
@@ -101,7 +114,7 @@ namespace TerrainBuilder.Controllers
             string y = HttpContext.Request.Form["OffsetY"].ToString();
 
             ModelState.ClearValidationState(nameof(terrainViewModel));
-            TerrainViewModel tvm = await terrainsv.CreateTerrain(terrainViewModel, x, y);
+            TerrainViewModel tvm = await terrainsv.CreateTerrain(terrainViewModel, x, y, userId);
 
             if (tvm.IsDBSaveSuccessful)
             {
@@ -164,45 +177,58 @@ namespace TerrainBuilder.Controllers
         }
 
         //// GET: TerrainViewModels/Delete/5
-        //public async Task<IActionResult> Delete(Guid? id)
-        //{
-        //    if (id == null || _context.TerrainViewModel == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            if (id == null || _context.Terrains == null)
+            {
+                return NotFound();
+            }
 
-        //    var terrainViewModel = await _context.TerrainViewModel
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (terrainViewModel == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var terrain = await _context.Terrains
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (terrain == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(terrainViewModel);
-        //}
+            TerrainViewModel tvm = new TerrainViewModel();
 
-        //// POST: TerrainViewModels/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(Guid id)
-        //{
-        //    if (_context.TerrainViewModel == null)
-        //    {
-        //        return Problem("Entity set 'ApplicationDbContext.TerrainViewModel'  is null.");
-        //    }
-        //    var terrainViewModel = await _context.TerrainViewModel.FindAsync(id);
-        //    if (terrainViewModel != null)
-        //    {
-        //        _context.TerrainViewModel.Remove(terrainViewModel);
-        //    }
+            tvm.Id = terrain.Id;
+            tvm.Name = terrain.Name;
+            tvm.Description = terrain.Description;
+            tvm.Length = terrain.Length;
+            tvm.Width = terrain.Width;
+            tvm.OffsetX = terrain.OffsetX;
+            tvm.OffsetY = terrain.OffsetY;
+            tvm.Octaves = terrain.Octaves;
+            tvm.Influence = terrain.Influence;
 
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            return View(tvm);
+        }
 
-        //private bool TerrainViewModelExists(Guid id)
-        //{
-        //    return _context.TerrainViewModel.Any(e => e.Id == id);
-        //}
+        // POST: TerrainViewModels/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            if (_context.Terrains == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Terrain'  is null.");
+            }
+            var terrain = await _context.Terrains.FindAsync(id);
+            if (terrain != null)
+            {
+                terrain.IsDeleted = true;
+                _context.Terrains.Update(terrain);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool TerrainViewModelExists(Guid id)
+        {
+            return _context.Terrains.Any(e => e.Id == id);
+        }
     }
 }
