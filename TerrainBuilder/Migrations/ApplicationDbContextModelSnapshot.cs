@@ -8,7 +8,7 @@ using TerrainBuilder.Data;
 
 #nullable disable
 
-namespace TerrainBuilder.Data.Migrations
+namespace TerrainBuilder.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -343,6 +343,9 @@ namespace TerrainBuilder.Data.Migrations
 
                     b.Property<double>("Influence")
                         .HasColumnType("float");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Length")
                         .HasColumnType("int");

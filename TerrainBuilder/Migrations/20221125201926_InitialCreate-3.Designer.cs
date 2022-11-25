@@ -9,11 +9,11 @@ using TerrainBuilder.Data;
 
 #nullable disable
 
-namespace TerrainBuilder.Data.Migrations
+namespace TerrainBuilder.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221110213311_Terrain-Meeting")]
-    partial class TerrainMeeting
+    [Migration("20221125201926_InitialCreate-3")]
+    partial class InitialCreate3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -345,6 +345,9 @@ namespace TerrainBuilder.Data.Migrations
 
                     b.Property<double>("Influence")
                         .HasColumnType("float");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Length")
                         .HasColumnType("int");
