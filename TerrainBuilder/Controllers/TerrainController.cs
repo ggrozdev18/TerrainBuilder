@@ -50,7 +50,7 @@ namespace TerrainBuilder.Controllers
                 throw new ArgumentException("Invalid user sent");
             }
 
-            ApplicationUser appUser = await _context.Users.FindAsync(userId);
+            ApplicationUser appUser = await _context.Users.Where(m=>m.Id==userId).Include(m=>m.Terrains).FirstOrDefaultAsync();
 
             List<Terrain> allTerrains = appUser.Terrains.ToList();
             List<TerrainViewModel> tvms = new List<TerrainViewModel>();
