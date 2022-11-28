@@ -37,6 +37,7 @@
                 @Html.DisplayNameFor(model => model.Influence)
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -67,7 +68,7 @@
                 @Html.DisplayFor(modelItem => item.Influence)
             </td>
             <td>
-                 <a href="/terrains/generateterrain/?l=@item.Length&w=@item.Width&offX=@item.OffsetX&offY=@item.OffsetY&oct=@item.Octaves&inf=@item.Influence">Generate View</a>   
+                 <a href="/terrain/generateterrain/?l=@item.Length&w=@item.Width&offX=@item.OffsetX&offY=@item.OffsetY&oct=@item.Octaves&inf=@item.Influence">Generate View</a>   
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
