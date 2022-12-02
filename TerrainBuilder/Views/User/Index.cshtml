@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List of Users</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               User name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in ViewBag.users) {
+        <tr>
+            <td>
+               @item
+            </td>
+            <td>
+              @if(!User.IsInRole("Administrator")){ <a asp-action="AssignRole" asp-route-role="Administrator" asp-route-userId="@item">Make Admin</a> }
+              
+              @if(!User.IsInRole("User")){  <a asp-action="AssignRole" asp-route-role="User" asp-route-userId="@item">Make User</a> }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+

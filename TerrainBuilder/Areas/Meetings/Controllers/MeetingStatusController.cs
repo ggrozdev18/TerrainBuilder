@@ -2,92 +2,96 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TerrainBuilder.Data;
 
-namespace TerrainBuilder.Controllers
+namespace TerrainBuilder.Areas.Meetings.Controllers
 {
-    public class MeetingTypesController : Controller
+    [Area("Meetings")]
+  //  [Route("{controller=Home}/{action=Index}/{id?}")]
+   // [Authorize(Roles = )]
+    public class MeetingStatusController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MeetingTypesController(ApplicationDbContext context)
+        public MeetingStatusController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: MeetingTypes
+        // GET: MeetingStatus
         public async Task<IActionResult> Index()
         {
-              return View(await _context.MeetingTypes.ToListAsync());
+              return View(await _context.MeetingStatuses.ToListAsync());
         }
 
-        // GET: MeetingTypes/Details/5
+        // GET: MeetingStatus/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.MeetingTypes == null)
+            if (id == null || _context.MeetingStatuses == null)
             {
                 return NotFound();
             }
 
-            var meetingType = await _context.MeetingTypes
+            var meetingStatus = await _context.MeetingStatuses
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (meetingType == null)
+            if (meetingStatus == null)
             {
                 return NotFound();
             }
 
-            return View(meetingType);
+            return View(meetingStatus);
         }
 
-        // GET: MeetingTypes/Create
+        // GET: MeetingStatus/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: MeetingTypes/Create
+        // POST: MeetingStatus/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] MeetingType meetingType)
+        public async Task<IActionResult> Create([Bind("Id,Name")] MeetingStatus meetingStatus)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(meetingType);
+                _context.Add(meetingStatus);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(meetingType);
+            return View(meetingStatus);
         }
 
-        // GET: MeetingTypes/Edit/5
+        // GET: MeetingStatus/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.MeetingTypes == null)
+            if (id == null || _context.MeetingStatuses == null)
             {
                 return NotFound();
             }
 
-            var meetingType = await _context.MeetingTypes.FindAsync(id);
-            if (meetingType == null)
+            var meetingStatus = await _context.MeetingStatuses.FindAsync(id);
+            if (meetingStatus == null)
             {
                 return NotFound();
             }
-            return View(meetingType);
+            return View(meetingStatus);
         }
 
-        // POST: MeetingTypes/Edit/5
+        // POST: MeetingStatus/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] MeetingType meetingType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] MeetingStatus meetingStatus)
         {
-            if (id != meetingType.Id)
+            if (id != meetingStatus.Id)
             {
                 return NotFound();
             }
@@ -96,12 +100,12 @@ namespace TerrainBuilder.Controllers
             {
                 try
                 {
-                    _context.Update(meetingType);
+                    _context.Update(meetingStatus);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MeetingTypeExists(meetingType.Id))
+                    if (!MeetingStatusExists(meetingStatus.Id))
                     {
                         return NotFound();
                     }
@@ -112,49 +116,49 @@ namespace TerrainBuilder.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(meetingType);
+            return View(meetingStatus);
         }
 
-        // GET: MeetingTypes/Delete/5
+        // GET: MeetingStatus/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.MeetingTypes == null)
+            if (id == null || _context.MeetingStatuses == null)
             {
                 return NotFound();
             }
 
-            var meetingType = await _context.MeetingTypes
+            var meetingStatus = await _context.MeetingStatuses
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (meetingType == null)
+            if (meetingStatus == null)
             {
                 return NotFound();
             }
 
-            return View(meetingType);
+            return View(meetingStatus);
         }
 
-        // POST: MeetingTypes/Delete/5
+        // POST: MeetingStatus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.MeetingTypes == null)
+            if (_context.MeetingStatuses == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.MeetingType'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.MeetingStatus'  is null.");
             }
-            var meetingType = await _context.MeetingTypes.FindAsync(id);
-            if (meetingType != null)
+            var meetingStatus = await _context.MeetingStatuses.FindAsync(id);
+            if (meetingStatus != null)
             {
-                _context.MeetingTypes.Remove(meetingType);
+                _context.MeetingStatuses.Remove(meetingStatus);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MeetingTypeExists(int id)
+        private bool MeetingStatusExists(int id)
         {
-          return _context.MeetingTypes.Any(e => e.Id == id);
+          return _context.MeetingStatuses.Any(e => e.Id == id);
         }
     }
 }
