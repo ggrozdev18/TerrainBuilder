@@ -4,7 +4,7 @@ using TerrainBuilder.Models;
 
 namespace TerrainBuilder.Controllers
 {
-    public class HomeController : Controller //test2 4
+    public class HomeController : Controller 
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -18,10 +18,6 @@ namespace TerrainBuilder.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -12,7 +12,7 @@ namespace TerrainBuilder.Areas.Meetings.Controllers
 {
     [Area("Meetings")]
   //  [Route("{controller=Home}/{action=Index}/{id?}")]
-   // [Authorize(Roles = )]
+    [Authorize(Roles = "Administrator" )]
     public class MeetingStatusController : Controller
     {
         private readonly ApplicationDbContext _context;
