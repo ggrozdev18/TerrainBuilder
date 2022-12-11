@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TerrainBuilder.Areas.Meetings.Controllers
 {
-    [Area("Meeting")]
-    // [Route("Meeting/[controller]/[Action]/{id?}")]
+    [Area("Meetings")]
+    //[Route("Meeting/[controller]/[Action]/{id?}")]
     [Authorize(Roles = "Administrator")]
     public class MeetingTypesController : Controller
     {
