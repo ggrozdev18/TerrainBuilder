@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TerrainBuilder.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TerrainBuilder.Areas.Meetings.Controllers
 {
-    [Area("Meeting")]
-    // [Route("Meeting/[controller]/[Action]/{id?}")]
-    // [Authorize(Roles = )]
+    [Area("Meetings")]
+    //[Route("Meeting/[controller]/[Action]/{id?}")]
+    [Authorize(Roles = "Administrator")]
     public class MeetingTypesController : Controller
     {
         private readonly ApplicationDbContext _context;

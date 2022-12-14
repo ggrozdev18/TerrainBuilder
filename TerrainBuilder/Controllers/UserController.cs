@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TerrainBuilder.Data;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TerrainBuilder.Controllers
 {
+    [Authorize(Roles ="Administrator")]
     public class UserController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
