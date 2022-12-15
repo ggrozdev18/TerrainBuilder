@@ -28,9 +28,25 @@ namespace TerrainBuilder.Controllers
             userManager = _userManager;
             context= _context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<string> users = context.Users.Select(m => m.UserName).ToList();
+            List<ApplicationUser> users = context.Users.ToList();
+            foreach(var u in users)
+            {
+                var userRoles = await userManager.GetRolesAsync(u);
+
+                foreach(var role in userRoles)
+                {
+                    if(role == "Administrator")
+                    {
+                        u.isAdmin = true;
+                    }
+                    if(role=="User")
+                    {
+                        u.isUser = true;
+                    }
+                }
+            }
             ViewBag.users = users;
             return View();
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TerrainBuilder.Data
 {
@@ -8,6 +9,12 @@ namespace TerrainBuilder.Data
         [StringLength(50)]
         public string? FirstName { get; set; }
 
-        public List<Terrain> Terrains { get; set; } = new List<Terrain>();
+        [NotMapped]
+        public bool isUser { get; set; } = false;
+
+        [NotMapped]
+        public bool isAdmin { get; set; } = false;
+
+public List<Terrain> Terrains { get; set; } = new List<Terrain>();
     }
 }

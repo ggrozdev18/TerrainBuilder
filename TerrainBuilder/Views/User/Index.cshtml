@@ -11,19 +11,36 @@
             <th>
                User name
             </th>
-            <th></th>
+            <th>Roles </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in ViewBag.users) {
+@foreach (var user in ViewBag.users) {
         <tr>
             <td>
-               @item
+               @user
             </td>
             <td>
-              @if(!User.IsInRole("Administrator")){ <a asp-action="AssignRole" asp-route-role="Administrator" asp-route-userId="@item">Make Admin</a> }
-              
-              @if(!User.IsInRole("User")){  <a asp-action="AssignRole" asp-route-role="User" asp-route-userId="@item">Make User</a> }
+           
+           
+                @if(user.isAdmin)
+                {
+                   <div>Admin</div>
+                }
+                else
+                {
+                   <a asp-action="AssignRole" asp-route-role="Administrator" asp-route-userId="@user">Make Admin</a> 
+                }
+            
+                @if(user.isUser)
+                {
+                   <div>User</div>
+                }
+                else
+                {
+                   <a asp-action="AssignRole" asp-route-role="User" asp-route-userId="@user">Make User</a> 
+                }
+             
             </td>
         </tr>
 }

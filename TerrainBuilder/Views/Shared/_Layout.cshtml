@@ -18,18 +18,37 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
-                         @if (this.User?.Identity != null && this.User.Identity.IsAuthenticated)
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Meetings">Meetings</a>
+                        </li>
+                         @if (this.User?.Identity != null && this.User.Identity.IsAuthenticated )
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Terrain" asp-action="Index">Terrains</a>
                             </li>
                         }
-
+                         @if (this.User?.Identity != null && this.User.Identity.IsAuthenticated && this.User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Meetings" asp-controller="Meetings" asp-action="Index">Meetings Admin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Meetings" asp-controller="MeetingStatus" asp-action="Index">Meeting Statuses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Meetings" asp-controller="MeetingTypes" asp-action="Index">Meeting Types</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Meetings" asp-controller="Cities" asp-action="Index">Cities</a>
+                            </li>
+                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users Admin</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
